@@ -78,8 +78,8 @@ See [`docs/Operations.md`](docs/Operations.md) before installing.
 
 ## Building from Source
 
-Requirements are Visual Studio 2022 with the Desktop development with C++ workload, the MSVC
-v143 toolset, and a Windows 10/11 SDK. The source uses C++17 and has no package-manager
+Requirements are Visual Studio 18 with the Desktop development with C++ workload, the MSVC
+v145 toolset, and a Windows 10/11 SDK. The source uses C++17 and has no package-manager
 dependencies.
 
 ```text

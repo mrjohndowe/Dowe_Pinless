@@ -17,6 +17,7 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 - LocalSystem service for TOTP and single-use recovery-code validation.
 - DPAPI-protected enrollment with ten hashed backup recovery codes.
 - Explicit install, uninstall, validation, and break-glass recovery documentation.
+- Visual Studio 18/MSVC v145 project targeting for the current Windows development toolchain.
 
 ### Security
 

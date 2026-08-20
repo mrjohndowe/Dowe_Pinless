@@ -3,7 +3,7 @@
 ## Prerequisites
 
 - Disposable Windows 10/11 x64 VM with a snapshot.
-- Visual Studio 2022 with **Desktop development with C++**, MSVC v143, and a Windows 10/11 SDK.
+- Visual Studio 18 with **Desktop development with C++**, MSVC v145, and a Windows 10/11 SDK.
 - A separate local administrator account with a tested password.
 - If BitLocker is enabled, a verified recovery key stored outside the VM.
 
