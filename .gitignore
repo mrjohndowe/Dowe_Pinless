@@ -1,0 +1,27 @@
+# Visual Studio and MSBuild output
+.vs/
+*.VC.db
+*.VC.opendb
+*.suo
+*.user
+*.aps
+*.pch
+*.ipch
+*.obj
+*.iobj
+*.ipdb
+*.pdb
+*.ilk
+*.tlog
+*.lastbuildstate
+*.log
+*.lib
+*.exp
+*.dll
+*.exe
+Debug/
+Release/
+x64/
+src/**/x64/
+src/**/Debug/
+src/**/Release/

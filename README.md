@@ -8,18 +8,23 @@ Dowe Pinless is a Windows sign-in credential provider intended to offer an alter
 
 The project is currently under development. It is not ready for production use or deployment on systems where loss of access would be unacceptable.
 
-## Planned Features
+## Implemented Proof of Concept
 
-- Windows sign-in through a native credential-provider tile
-- TOTP-based authentication using standard authenticator applications
-- Configurable enrollment and secret provisioning workflow
-- Single-use backup recovery codes
-- Secure local protection of TOTP secrets and recovery-code material
-- Recovery-code regeneration and revocation
-- Replay resistance and appropriate time-window validation
-- Clear audit and diagnostic events without logging authentication secrets
-- Administrative deployment and configuration options
-- Safe coexistence with an alternative Windows sign-in or recovery method during testing
+- Windows 10/11 V2 Credential Provider tile
+- LocalSystem validation service with a versioned local named-pipe protocol
+- RFC 6238 HMAC-SHA-1 TOTP with six digits, 30-second periods, and ±1-step tolerance
+- CNG-generated 160-bit seeds protected by machine-scope DPAPI
+- Persisted TOTP replay prevention
+- Ten single-use recovery codes stored as salted SHA-256 hashes
+- Constant-time comparison of TOTP digits and recovery-code hashes
+- Per-account failed-attempt delay
+- Enrollment and verification utility producing a standard `otpauth://` QR payload
+- Explicit install/uninstall scripts that leave built-in Windows providers enabled
+
+The POC validates Dowe Pinless codes but does not yet complete a TOTP-only Windows logon.
+A Credential Provider gathers and serializes credentials; it is not an LSA authentication
+authority and cannot turn a valid TOTP into a password, Windows Hello private key, or logon
+token. See [`docs/Architecture.md`](docs/Architecture.md) for the boundary and later options.
 
 ## Security Notes
 
@@ -53,50 +58,49 @@ The exact supported environment will be documented as implementation and testing
 
 ## Project Status
 
-**Status: Early development / pre-release**
+**Status: Compiling proof of concept / pre-release**
 
 The public interfaces, storage format, enrollment process, supported Windows versions, build steps, and deployment procedure may change. No production-readiness, security, compatibility, or availability guarantees are currently made.
 
 ## Installation
 
-Prebuilt installation packages are not yet available.
+Use a disposable x64 Windows VM with a snapshot, a separate recovery administrator, and a
+tested Windows password. Build first, then run the following from an elevated PowerShell session:
 
-Installation instructions will be added after the credential provider, enrollment tooling, secure storage strategy, and recovery workflow are implemented and tested. A future installation procedure is expected to cover:
+```powershell
+.\installer\Install-DowePinless.ps1 -BuildDirectory .\x64\Release
+& "$env:ProgramFiles\Dowe Pinless\DowePinlessEnroll.exe"
+```
 
-1. Verifying the package and publisher signature.
-2. Installing the credential-provider binary and supporting components.
-3. Registering the provider with Windows.
-4. Enrolling a TOTP authenticator.
-5. Generating and securely storing backup recovery codes.
-6. Confirming an independent sign-in method before enabling Dowe Pinless.
-7. Testing sign-in and recovery in a controlled environment.
+The installer registers the Dowe Pinless provider and validator service. It does **not**
+register a provider filter or disable Windows password, PIN, Hello, or recovery providers.
+See [`docs/Operations.md`](docs/Operations.md) before installing.
 
 ## Building from Source
 
-Authoritative build instructions will be added when the initial project structure and dependency choices are finalized.
-
-The anticipated workflow is:
+Requirements are Visual Studio 2022 with the Desktop development with C++ workload, the MSVC
+v143 toolset, and a Windows 10/11 SDK. The source uses C++17 and has no package-manager
+dependencies.
 
 ```text
 1. Clone the repository.
-2. Open the solution in a supported version of Visual Studio.
-3. Restore or obtain the documented dependencies.
-4. Select the required Windows architecture and configuration.
-5. Build the credential provider and its supporting tools.
-6. Run the automated tests before registering any binaries.
+2. Open DowePinless.sln in Visual Studio.
+3. Select Release and x64.
+4. Build the solution.
 ```
 
-Future documentation will include the exact Visual Studio version, Windows SDK version, dependency setup, build targets, signing requirements, registration commands, and clean-uninstall procedure.
+The build emits `DowePinlessCredentialProvider.dll`, `DowePinlessService.exe`, and
+`DowePinlessEnroll.exe` under `x64\Release`.
 
 ## Usage
 
-The planned sign-in flow is:
+The current POC flow is:
 
-1. Select the **Dowe Pinless** credential tile on the Windows sign-in screen.
-2. Open the authenticator application enrolled for the Windows account.
-3. Enter the current TOTP code.
-4. Submit the code before it expires.
-5. If the authenticator is unavailable, select the recovery option and enter an unused backup code.
+1. Enroll using `DowePinlessEnroll.exe` and import its `otpauth://` payload.
+2. Save the ten recovery codes offline.
+3. Run `DowePinlessEnroll.exe --verify` with two consecutive TOTP values.
+4. Select the **Dowe Pinless** tile and validate a current TOTP or unused recovery code.
+5. Finish sign-in using a built-in Windows provider while this remains a validation POC.
 
 Enrollment, account association, recovery, reset, and administrative usage instructions will be documented as those components become available.
 
@@ -129,9 +133,7 @@ Contributions and security-reporting instructions will be added when the reposit
 
 ## License
 
-No license has been selected yet.
-
-Until a license file is added to the repository, the source code and related materials remain subject to the rights reserved by their respective copyright holders. A future release should include a `LICENSE` file and update this section with the chosen terms.
+Dowe Pinless is proprietary software. See [`LICENSE.md`](LICENSE.md).
 
 ## Disclaimer
 
