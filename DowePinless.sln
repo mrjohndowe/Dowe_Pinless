@@ -1,36 +1,39 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31903.59
+# Visual Studio Version 18
+VisualStudioVersion = 18.9.12112.369 stable
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{BC8A1FFA-BEE3-4634-8014-F334798102B3}") = "DowePinlessCommon", "src\Common\DowePinlessCommon.vcxproj", "{893FA293-7D48-46A7-B186-06E44541FC0B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DowePinlessCommon", "src\Common\DowePinlessCommon.vcxproj", "{893FA293-7D48-46A7-B186-06E44541FC0B}"
 EndProject
-Project("{BC8A1FFA-BEE3-4634-8014-F334798102B3}") = "DowePinlessService", "src\Service\DowePinlessService.vcxproj", "{8A0D1EEC-D3F2-418A-9B42-5B9B7D77C71F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DowePinlessService", "src\Service\DowePinlessService.vcxproj", "{8A0D1EEC-D3F2-418A-9B42-5B9B7D77C71F}"
 EndProject
-Project("{BC8A1FFA-BEE3-4634-8014-F334798102B3}") = "DowePinlessEnroll", "src\Enrollment\DowePinlessEnroll.vcxproj", "{F714B1A3-B5C5-45D4-92B2-5CE371B435B4}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DowePinlessEnroll", "src\Enrollment\DowePinlessEnroll.vcxproj", "{F714B1A3-B5C5-45D4-92B2-5CE371B435B4}"
 EndProject
-Project("{BC8A1FFA-BEE3-4634-8014-F334798102B3}") = "DowePinlessCredentialProvider", "src\CredentialProvider\DowePinlessCredentialProvider.vcxproj", "{AD9C247A-E111-4E16-B29C-3FA980080EF2}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DowePinlessCredentialProvider", "src\CredentialProvider\DowePinlessCredentialProvider.vcxproj", "{AD9C247A-E111-4E16-B29C-3FA980080EF2}"
 EndProject
 Global
- GlobalSection(SolutionConfigurationPlatforms) = preSolution
-  Debug|x64 = Debug|x64
-  Release|x64 = Release|x64
- EndGlobalSection
- GlobalSection(ProjectConfigurationPlatforms) = postSolution
-  {893FA293-7D48-46A7-B186-06E44541FC0B}.Debug|x64.ActiveCfg = Debug|x64
-  {893FA293-7D48-46A7-B186-06E44541FC0B}.Debug|x64.Build.0 = Debug|x64
-  {893FA293-7D48-46A7-B186-06E44541FC0B}.Release|x64.ActiveCfg = Release|x64
-  {893FA293-7D48-46A7-B186-06E44541FC0B}.Release|x64.Build.0 = Release|x64
-  {8A0D1EEC-D3F2-418A-9B42-5B9B7D77C71F}.Debug|x64.ActiveCfg = Debug|x64
-  {8A0D1EEC-D3F2-418A-9B42-5B9B7D77C71F}.Debug|x64.Build.0 = Debug|x64
-  {8A0D1EEC-D3F2-418A-9B42-5B9B7D77C71F}.Release|x64.ActiveCfg = Release|x64
-  {8A0D1EEC-D3F2-418A-9B42-5B9B7D77C71F}.Release|x64.Build.0 = Release|x64
-  {F714B1A3-B5C5-45D4-92B2-5CE371B435B4}.Debug|x64.ActiveCfg = Debug|x64
-  {F714B1A3-B5C5-45D4-92B2-5CE371B435B4}.Debug|x64.Build.0 = Debug|x64
-  {F714B1A3-B5C5-45D4-92B2-5CE371B435B4}.Release|x64.ActiveCfg = Release|x64
-  {F714B1A3-B5C5-45D4-92B2-5CE371B435B4}.Release|x64.Build.0 = Release|x64
-  {AD9C247A-E111-4E16-B29C-3FA980080EF2}.Debug|x64.ActiveCfg = Debug|x64
-  {AD9C247A-E111-4E16-B29C-3FA980080EF2}.Debug|x64.Build.0 = Debug|x64
-  {AD9C247A-E111-4E16-B29C-3FA980080EF2}.Release|x64.ActiveCfg = Release|x64
-  {AD9C247A-E111-4E16-B29C-3FA980080EF2}.Release|x64.Build.0 = Release|x64
- EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{893FA293-7D48-46A7-B186-06E44541FC0B}.Debug|x64.ActiveCfg = Debug|x64
+		{893FA293-7D48-46A7-B186-06E44541FC0B}.Debug|x64.Build.0 = Debug|x64
+		{893FA293-7D48-46A7-B186-06E44541FC0B}.Release|x64.ActiveCfg = Release|x64
+		{893FA293-7D48-46A7-B186-06E44541FC0B}.Release|x64.Build.0 = Release|x64
+		{8A0D1EEC-D3F2-418A-9B42-5B9B7D77C71F}.Debug|x64.ActiveCfg = Debug|x64
+		{8A0D1EEC-D3F2-418A-9B42-5B9B7D77C71F}.Debug|x64.Build.0 = Debug|x64
+		{8A0D1EEC-D3F2-418A-9B42-5B9B7D77C71F}.Release|x64.ActiveCfg = Release|x64
+		{8A0D1EEC-D3F2-418A-9B42-5B9B7D77C71F}.Release|x64.Build.0 = Release|x64
+		{F714B1A3-B5C5-45D4-92B2-5CE371B435B4}.Debug|x64.ActiveCfg = Debug|x64
+		{F714B1A3-B5C5-45D4-92B2-5CE371B435B4}.Debug|x64.Build.0 = Debug|x64
+		{F714B1A3-B5C5-45D4-92B2-5CE371B435B4}.Release|x64.ActiveCfg = Release|x64
+		{F714B1A3-B5C5-45D4-92B2-5CE371B435B4}.Release|x64.Build.0 = Release|x64
+		{AD9C247A-E111-4E16-B29C-3FA980080EF2}.Debug|x64.ActiveCfg = Debug|x64
+		{AD9C247A-E111-4E16-B29C-3FA980080EF2}.Debug|x64.Build.0 = Debug|x64
+		{AD9C247A-E111-4E16-B29C-3FA980080EF2}.Release|x64.ActiveCfg = Release|x64
+		{AD9C247A-E111-4E16-B29C-3FA980080EF2}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 EndGlobal
