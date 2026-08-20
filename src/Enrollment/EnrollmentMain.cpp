@@ -26,11 +26,16 @@ std::wstring UriEscape(std::wstring_view input) {
 }
 int Verify(const std::wstring& account) {
     std::wcout<<L"Enter current TOTP or unused recovery code: "; std::wstring code; std::getline(std::wcin,code);
-    dowe::ipc::Request q{}; wcsncpy_s(q.account.data(),q.account.size(),account.c_str(),_TRUNCATE); wcsncpy_s(q.code.data(),q.code.size(),code.c_str(),_TRUNCATE);
+    dowe::ipc::Request q{}; dowe::ipc::InitializeRequest(q,dowe::ipc::RequestType::Validate);
+    wcsncpy_s(q.account.data(),q.account.size(),account.c_str(),_TRUNCATE); wcsncpy_s(q.code.data(),q.code.size(),code.c_str(),_TRUNCATE);
+    const auto localDetail=dowe::ipc::InspectRequest(q,dowe::ipc::RequestType::Validate);
+    if(localDetail!=0){std::wcerr<<L"Local IPC request framing failed (detail 0x"<<std::hex<<localDetail<<L").\n";return 4;}
     dowe::ipc::Response r{}; bool sent=dowe::ipc::SendRequest(q,r); dowe::security::SecureClear(code.data(),code.size()*sizeof(wchar_t));
     if(!sent){std::wcerr<<L"Dowe Pinless service is unavailable.\n";return 2;}
     if(r.result==dowe::ipc::Result::Success){std::wcout<<L"Validation succeeded.\n";return 0;}
-    std::wcerr<<L"Validation failed (result "<<static_cast<unsigned>(r.result)<<L").\n";return 3;
+    std::wcerr<<L"Validation failed (result "<<static_cast<unsigned>(r.result);
+    if(r.result==dowe::ipc::Result::BadRequest)std::wcerr<<L", request detail 0x"<<std::hex<<r.reserved;
+    std::wcerr<<L").\n";return 3;
 }
 }
 int wmain(int argc,wchar_t** argv) {

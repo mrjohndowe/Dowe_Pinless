@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Windows.h>
+#include <algorithm>
 #include <array>
 #include <cstdint>
 
@@ -20,6 +21,16 @@ enum class Result : std::uint32_t {
     NotEnrolled = 4,
     BadRequest = 5,
     InternalError = 6,
+};
+
+enum BadRequestDetail : std::uint16_t {
+    BadMagic = 1u << 0,
+    BadVersion = 1u << 1,
+    BadType = 1u << 2,
+    EmptyAccount = 1u << 3,
+    UnterminatedAccount = 1u << 4,
+    EmptyCode = 1u << 5,
+    UnterminatedCode = 1u << 6,
 };
 
 #pragma pack(push, 1)
@@ -42,6 +53,26 @@ struct Response {
 
 static_assert(sizeof(Request) <= 1024);
 static_assert(sizeof(Response) == 16);
+
+inline void InitializeRequest(Request& request, RequestType type) noexcept {
+    request.magic = kMagic;
+    request.version = kVersion;
+    request.type = type;
+    request.account.fill(L'\0');
+    request.code.fill(L'\0');
+}
+
+inline std::uint16_t InspectRequest(const Request& request, RequestType expectedType) noexcept {
+    std::uint16_t detail{};
+    if (request.magic != kMagic) detail |= BadMagic;
+    if (request.version != kVersion) detail |= BadVersion;
+    if (request.type != expectedType) detail |= BadType;
+    if (request.account.front() == L'\0') detail |= EmptyAccount;
+    if (std::find(request.account.begin(), request.account.end(), L'\0') == request.account.end()) detail |= UnterminatedAccount;
+    if (request.code.front() == L'\0') detail |= EmptyCode;
+    if (std::find(request.code.begin(), request.code.end(), L'\0') == request.code.end()) detail |= UnterminatedCode;
+    return detail;
+}
 
 bool SendRequest(const Request& request, Response& response) noexcept;
 

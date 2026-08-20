@@ -15,10 +15,8 @@ void Failure(store::Record& r) {
 ipc::Response Validator::Validate(const ipc::Request& q) noexcept {
     ipc::Response out{};
     try {
-        if (q.magic != ipc::kMagic || q.version != ipc::kVersion || q.type != ipc::RequestType::Validate ||
-            q.account.back() != 0 || q.code.back() != 0 || q.account.front() == 0 || q.code.front() == 0) {
-            out.result=ipc::Result::BadRequest; return out;
-        }
+        out.reserved=ipc::InspectRequest(q,ipc::RequestType::Validate);
+        if (out.reserved != 0) { out.result=ipc::Result::BadRequest; return out; }
         std::scoped_lock lock(mutex_); store::Record r;
         const std::wstring account(q.account.data()), code(q.code.data());
         if (!store::Load(account, r)) { out.result=ipc::Result::NotEnrolled; return out; }

@@ -7,7 +7,14 @@
 namespace {
 SERVICE_STATUS_HANDLE statusHandle{}; HANDLE stopEvent{}; dowe::service::Validator validator;
 void Report(DWORD state, DWORD error=NO_ERROR) { SERVICE_STATUS s{SERVICE_WIN32_OWN_PROCESS,state,SERVICE_ACCEPT_STOP,error,0,0,0}; if(state==SERVICE_START_PENDING) s.dwControlsAccepted=0; SetServiceStatus(statusHandle,&s); }
-void WINAPI Control(DWORD code) { if(code==SERVICE_CONTROL_STOP){ Report(SERVICE_STOP_PENDING); SetEvent(stopEvent); } }
+void WINAPI Control(DWORD code) {
+    if(code==SERVICE_CONTROL_STOP){
+        Report(SERVICE_STOP_PENDING); SetEvent(stopEvent);
+        // Wake a blocking ConnectNamedPipe so the server loop can observe stopEvent.
+        HANDLE wake=CreateFileW(dowe::ipc::kPipeName,GENERIC_WRITE,0,nullptr,OPEN_EXISTING,0,nullptr);
+        if(wake!=INVALID_HANDLE_VALUE){dowe::ipc::Request q{};q.magic=0;DWORD written{};WriteFile(wake,&q,sizeof(q),&written,nullptr);CloseHandle(wake);}
+    }
+}
 DWORD WINAPI ClientThread(void* parameter) {
     HANDLE pipe=static_cast<HANDLE>(parameter); dowe::ipc::Request q{}; DWORD read=0,written=0;
     if(ReadFile(pipe,&q,sizeof(q),&read,nullptr)&&read==sizeof(q)){ auto r=validator.Validate(q); WriteFile(pipe,&r,sizeof(r),&written,nullptr); FlushFileBuffers(pipe); }

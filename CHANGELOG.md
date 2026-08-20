@@ -25,6 +25,14 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 - Added constant-time comparisons, ±1-step clock tolerance, replay rejection, bounded IPC,
   and persisted failed-attempt delays.
 - Kept all built-in Windows credential providers enabled in the proof of concept.
+- Made every IPC request field explicitly initialized and added non-sensitive malformed-request
+  diagnostics without exposing account secrets or authentication codes.
+
+### Fixed
+
+- Allowed the validator service to finish a pending stop by waking its blocked named-pipe listener.
+- Accepted bounded null-terminated IPC strings when the Debug CRT fills unused buffer elements
+  with its nonzero diagnostic pattern.
 
 <!-- release-please inserts new release sections above this line -->
 
