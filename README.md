@@ -18,7 +18,10 @@ The project is currently under development. It is not ready for production use o
 - Ten single-use recovery codes stored as salted SHA-256 hashes
 - Constant-time comparison of TOTP digits and recovery-code hashes
 - Per-account failed-attempt delay
-- Enrollment and verification utility producing a standard `otpauth://` QR payload
+- Enrollment and verification utility with a locally rendered QR code and an optional manual
+  Base32 secret-key view
+- Pre-commit enrollment confirmation: the existing seed and recovery codes are not replaced
+  until a six-digit code from the newly configured authenticator succeeds
 - Explicit install/uninstall scripts that leave built-in Windows providers enabled
 
 The POC validates Dowe Pinless codes but does not yet complete a TOTP-only Windows logon.
@@ -96,11 +99,13 @@ The build emits `DowePinlessCredentialProvider.dll`, `DowePinlessService.exe`, a
 
 The current POC flow is:
 
-1. Enroll using `DowePinlessEnroll.exe` and import its `otpauth://` payload.
-2. Save the ten recovery codes offline.
-3. Run `DowePinlessEnroll.exe --verify` with two consecutive TOTP values.
-4. Select the **Dowe Pinless** tile and validate a current TOTP or unused recovery code.
-5. Finish sign-in using a built-in Windows provider while this remains a validation POC.
+1. Enroll using `DowePinlessEnroll.exe` and choose QR code, manual secret key, or both.
+2. Confirm the new authenticator by entering its current six-digit value. Dowe Pinless commits
+   the new record only after this confirmation succeeds.
+3. Save the ten recovery codes offline.
+4. Run `DowePinlessEnroll.exe --verify` with two consecutive TOTP values.
+5. Select the **Dowe Pinless** tile and validate a current TOTP or unused recovery code.
+6. Finish sign-in using a built-in Windows provider while this remains a validation POC.
 
 Enrollment, account association, recovery, reset, and administrative usage instructions will be documented as those components become available.
 
@@ -134,6 +139,8 @@ Contributions and security-reporting instructions will be added when the reposit
 ## License
 
 Dowe Pinless is proprietary software. See [`LICENSE.md`](LICENSE.md).
+Third-party components retain their own licenses; see
+[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
 
 ## Disclaimer
 

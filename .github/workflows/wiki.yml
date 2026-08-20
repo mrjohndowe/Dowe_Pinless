@@ -1,0 +1,63 @@
+name: Synchronize project wiki
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - README.md
+      - CHANGELOG.md
+      - docs/**
+      - wiki
+      - .github/scripts/sync-wiki.ps1
+      - .github/workflows/wiki.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: dowe-pinless-wiki
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Publish documentation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the main repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: false
+
+      - name: Confirm that the GitHub wiki is initialized
+        env:
+          WIKI_URL: https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.wiki.git
+        run: |
+          if ! git ls-remote "$WIKI_URL" HEAD >/dev/null 2>&1; then
+            echo "::error::The GitHub wiki is not initialized. Enable Wikis in repository settings, create the first page, publish the local wiki submodule, and rerun this workflow."
+            exit 1
+          fi
+
+      - name: Clone the GitHub wiki
+        env:
+          WIKI_URL: https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.wiki.git
+        run: git clone "$WIKI_URL" published-wiki
+
+      - name: Generate current wiki pages
+        shell: pwsh
+        run: ./.github/scripts/sync-wiki.ps1 -Destination published-wiki
+
+      - name: Publish wiki changes
+        working-directory: published-wiki
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add --all
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "The wiki is already current."
+            exit 0
+          fi
+          git commit -m "docs: synchronize wiki from ${GITHUB_SHA::7}"
+          git push origin HEAD:master

@@ -13,10 +13,16 @@ service and registers only the Dowe Pinless provider CLSID. It does not filter o
 
 ## Enrollment and validation
 
-Run `DowePinlessEnroll.exe` from an elevated console. Enrollment is intentionally explicit and
-replaces the current account's previous Dowe Pinless record. Import the printed `otpauth://` URI
-in a compatible authenticator. The POC prints the URI rather than rendering a bitmap QR code;
-most authenticator/QR utilities can import or encode this standards-compliant URI.
+Run `DowePinlessEnroll.exe` from an elevated interactive console. Enrollment is intentionally
+explicit and offers three setup choices: a locally rendered QR code, the Base32 secret key for
+manual entry, or both. The QR encoder runs inside the enrollment process; it does not contact a
+website, save an image, or send the seed over the network.
+
+After adding the entry to an authenticator, enter its current six-digit value when prompted.
+Dowe Pinless validates that value against the newly generated seed before it writes anything to
+the enrollment store. Three failed confirmation attempts cancel the operation and leave the
+previous seed and recovery-code set unchanged. Only after confirmation succeeds are ten new
+recovery codes generated and the previous enrollment atomically replaced.
 
 Store all ten recovery codes offline. Run `DowePinlessEnroll.exe --verify` with two consecutive
 TOTP values. A repeated value should fail with replay status. Test one recovery code and verify

@@ -1,0 +1,5 @@
+[submodule "Dowe_Pinless.wiki"]
+	path = Dowe_Pinless.wiki
+	url = https://github.com/mrjohndowe/Dowe_Pinless.wiki.git
+	branch = master
+

@@ -18,6 +18,9 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 - DPAPI-protected enrollment with ten hashed backup recovery codes.
 - Explicit install, uninstall, validation, and break-glass recovery documentation.
 - Visual Studio 18/MSVC v145 project targeting for the current Windows development toolchain.
+- Local console QR-code enrollment with an explicit manual Base32 secret-key option.
+- Authenticator confirmation before replacing an existing enrollment or recovery-code set.
+- A pinned, provenance-documented copy of Project Nayuki's MIT-licensed C++ QR encoder.
 
 ### Security
 

@@ -25,6 +25,12 @@ five failures cause a 30-second delay.
 - Ten recovery codes use an unambiguous 32-character alphabet. Only SHA-256 hashes over a
   random per-enrollment salt and normalized code are stored. A successful use marks the code
   consumed before success is returned.
+- Enrollment encodes the standards-compliant `otpauth://` payload into a QR matrix locally using
+  the pinned MIT-licensed Project Nayuki C++ encoder. The seed is never sent to a QR website or
+  written to an image file. Manual Base32 display is an explicit user choice.
+- A newly generated seed is held in memory until a current six-digit authenticator value matches.
+  Failed confirmation leaves the prior enrollment intact; recovery codes are generated and the
+  new DPAPI record is committed only after confirmation.
 - Record replacement uses a write-through rename. Production should add authenticated record
   framing, stricter ACL creation, rollback resistance, and a transactional store.
 
