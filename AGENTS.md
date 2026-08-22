@@ -8,3 +8,4 @@
 - Do not commit or push unless the user explicitly asks the agent to do so.
 - Treat every push as a synchronized push: first pull the current remote branch with rebase, then push that same branch.
 - When handing off push commands, include both the synchronization pull and the subsequent push; do not provide a standalone `git push` command.
+- every PowerShell command block I provide will include an extra blank line after the final command—effectively an additional Enter at the end—so the last command is ready to execute when pasted
