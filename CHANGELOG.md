@@ -5,6 +5,18 @@ All notable changes to Dowe Pinless will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.0.0 (2026-08-22)
+
+
+### Features
+
+* add Dowe Pinless credential provider proof of concept ([56d9ae8](https://github.com/mrjohndowe/Dowe_Pinless/commit/56d9ae829b8b62effe1fe105f35c1c50ce3d7efd))
+
+
+### Bug Fixes
+
+* accept bounded IPC strings in debug builds ([1ab919d](https://github.com/mrjohndowe/Dowe_Pinless/commit/1ab919d7e7fbc4d519028f1fc6ba92dd6f4952b0))
+
 ## [Unreleased]
 
 ### Added
