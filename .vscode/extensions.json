@@ -1,5 +1,6 @@
 {
     "recommendations": [
-        "local.repo-terminal-switcher"
+        "local.repo-terminal-switcher",
+        "mrjohndowe.repo-terminal-switcher"
     ]
 }
