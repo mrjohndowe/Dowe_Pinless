@@ -1,0 +1,22 @@
+{
+    "sourceFile": "AGENTS.md",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1787717883882,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1787717947333,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,4 +12,7 @@\n * Treat every push as a synchronized push: first pull the current remote branch with rebase, then push that same branch.\n * When handing off push commands, include both the synchronization pull and the subsequent push; do not provide a standalone `git push` command.\n * every PowerShell command block provided will include an extra blank line after the final command—effectively an additional Enter at the end—so the last command is ready to execute when pasted\n \n+- Do not push anything straight to the repository\n+- If you are giving me commands to create a branch, then give me commands to merge then as well\n+\n"
+                }
+            ],
+            "date": 1787717883882,
+            "name": "Commit-0",
+            "content": "# Project Agent Instructions\n\n## Git handoff\n\n* After making project changes, always include the relevant Git commands the user can run to stage, commit, and push those changes.\n* Tailor the staging command to the files changed in the task; do not blindly stage unrelated working-tree changes.\n* Do not run, recommend, or include `git diff` commands.\n\n<br />\n\n* Do not commit or push unless the user explicitly asks the agent to do so.\n* Treat every push as a synchronized push: first pull the current remote branch with rebase, then push that same branch.\n* When handing off push commands, include both the synchronization pull and the subsequent push; do not provide a standalone `git push` command.\n* every PowerShell command block provided will include an extra blank line after the final command—effectively an additional Enter at the end—so the last command is ready to execute when pasted\n\n"
+        }
+    ]
+}

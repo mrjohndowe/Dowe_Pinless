@@ -1,0 +1,22 @@
+{
+    "sourceFile": ".vscode/extensions.json",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1787705114013,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1787705162879,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,7 +3,8 @@\n         \"local.repo-terminal-switcher\",\r\n         \"mrjohndowe.repo-terminal-switcher\",\r\n         \"merenut.ridiculous-coding\",\r\n         \"github.vscode-github-actions\",\r\n-        \"akiyamasho.yet-another-markdown-editor\"\r\n+        \"akiyamasho.yet-another-markdown-editor\",\r\n+        \"cirocfc.yet-another-vscode-extension-pack\"\r\n     ]\r\n }\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1787705114013,
+            "name": "Commit-0",
+            "content": "{\r\n    \"recommendations\": [\r\n        \"local.repo-terminal-switcher\",\r\n        \"mrjohndowe.repo-terminal-switcher\",\r\n        \"merenut.ridiculous-coding\",\r\n        \"github.vscode-github-actions\",\r\n        \"akiyamasho.yet-another-markdown-editor\"\r\n    ]\r\n}"
+        }
+    ]
+}

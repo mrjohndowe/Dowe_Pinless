@@ -1,6 +1,10 @@
 {
     "recommendations": [
         "local.repo-terminal-switcher",
-        "mrjohndowe.repo-terminal-switcher"
+        "mrjohndowe.repo-terminal-switcher",
+        "merenut.ridiculous-coding",
+        "github.vscode-github-actions",
+        "akiyamasho.yet-another-markdown-editor",
+        "cirocfc.yet-another-vscode-extension-pack"
     ]
 }
