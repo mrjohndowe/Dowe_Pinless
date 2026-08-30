@@ -31,8 +31,10 @@ five failures cause a 30-second delay.
 - A newly generated seed is held in memory until a current six-digit authenticator value matches.
   Failed confirmation leaves the prior enrollment intact; recovery codes are generated and the
   new DPAPI record is committed only after confirmation.
-- Record replacement uses a write-through rename. Production should add authenticated record
-  framing, stricter ACL creation, rollback resistance, and a transactional store.
+- Record replacement uses a write-through rename. The ProgramData record directory is created
+  with a protected DACL granting full access only to LocalSystem and local Administrators.
+  Production should add authenticated record framing, rollback resistance, and a transactional
+  store.
 
 ## Critical Windows limitation
 

@@ -1,6 +1,6 @@
 # Dowe Pinless
 
-> A Windows credential provider that replaces normal PIN-based sign-in with time-based one-time passwords (TOTP) and backup recovery codes.
+> An additive Windows sign-in credential-provider proof of concept for validating time-based one-time passwords (TOTP) and backup recovery codes.
 
 ## Overview
 

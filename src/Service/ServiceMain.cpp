@@ -23,7 +23,10 @@ DWORD WINAPI ClientThread(void* parameter) {
 void RunPipeServer() {
     PSECURITY_DESCRIPTOR sd{};
     // SYSTEM and Administrators full access; authenticated users may read/write the pipe.
-    ConvertStringSecurityDescriptorToSecurityDescriptorW(L"D:P(A;;GA;;;SY)(A;;GA;;;BA)(A;;GRGW;;;AU)",SDDL_REVISION_1,&sd,nullptr);
+    if (!ConvertStringSecurityDescriptorToSecurityDescriptorW(
+            L"D:P(A;;GA;;;SY)(A;;GA;;;BA)(A;;GRGW;;;AU)", SDDL_REVISION_1, &sd, nullptr)) {
+        return;
+    }
     SECURITY_ATTRIBUTES sa{sizeof(sa),sd,FALSE};
     while(WaitForSingleObject(stopEvent,0)!=WAIT_OBJECT_0){
         HANDLE pipe=CreateNamedPipeW(dowe::ipc::kPipeName,PIPE_ACCESS_DUPLEX,

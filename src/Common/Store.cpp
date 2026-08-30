@@ -1,11 +1,13 @@
 #include "Store.h"
 #include <Windows.h>
 #include <ShlObj.h>
+#include <sddl.h>
 #include <filesystem>
 #include <fstream>
 #include <stdexcept>
 
 #pragma comment(lib, "shell32.lib")
+#pragma comment(lib, "advapi32.lib")
 namespace dowe::store {
 namespace {
 constexpr std::uint32_t kFileMagic = 0x31504444; // DDP1
@@ -22,7 +24,20 @@ std::wstring DataDirectory() {
     PWSTR base{}; if (FAILED(SHGetKnownFolderPath(FOLDERID_ProgramData, 0, nullptr, &base)))
         throw std::runtime_error("ProgramData unavailable");
     std::filesystem::path path(base); CoTaskMemFree(base); path /= L"Dowe Pinless"; path /= L"Records";
-    std::filesystem::create_directories(path); return path.wstring();
+    std::filesystem::create_directories(path);
+
+    // Enrollment is deliberately an elevated operation.  The service runs as LocalSystem,
+    // so the record directory needs no access for ordinary interactive users.  Do not rely
+    // on the inherited ProgramData ACL here: it can be changed by local configuration.
+    PSECURITY_DESCRIPTOR descriptor{};
+    if (!ConvertStringSecurityDescriptorToSecurityDescriptorW(
+            L"D:P(A;;FA;;;SY)(A;;FA;;;BA)", SDDL_REVISION_1, &descriptor, nullptr))
+        throw std::runtime_error("record ACL creation failed");
+    const BOOL secured = SetFileSecurityW(path.c_str(),
+        DACL_SECURITY_INFORMATION | PROTECTED_DACL_SECURITY_INFORMATION, descriptor);
+    LocalFree(descriptor);
+    if (!secured) throw std::runtime_error("record ACL application failed");
+    return path.wstring();
 }
 std::wstring RecordPath(std::wstring_view account) {
     return (std::filesystem::path(DataDirectory()) / (SafeName(account) + L".bin")).wstring();
