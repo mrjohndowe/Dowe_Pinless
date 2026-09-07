@@ -5,6 +5,10 @@
         "merenut.ridiculous-coding",
         "github.vscode-github-actions",
         "akiyamasho.yet-another-markdown-editor",
-        "cirocfc.yet-another-vscode-extension-pack"
+        "cirocfc.yet-another-vscode-extension-pack",
+        "cweijan.vscode-mysql-client2",
+        "thaloco0ne.ftp-sync-watcher",
+        "blackmoon.ftp-express",
+        "donjayamanne.githistory"
     ]
 }
