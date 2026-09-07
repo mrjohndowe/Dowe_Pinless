@@ -4,6 +4,8 @@ VisualStudioVersion = 18.9.12112.369 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DowePinlessCommon", "src\Common\DowePinlessCommon.vcxproj", "{893FA293-7D48-46A7-B186-06E44541FC0B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DowePinlessCoreTests", "tests\DowePinlessCoreTests\DowePinlessCoreTests.vcxproj", "{52D7B61D-CC0F-4B13-AF7A-778561C054AC}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DowePinlessService", "src\Service\DowePinlessService.vcxproj", "{8A0D1EEC-D3F2-418A-9B42-5B9B7D77C71F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DowePinlessEnroll", "src\Enrollment\DowePinlessEnroll.vcxproj", "{F714B1A3-B5C5-45D4-92B2-5CE371B435B4}"
@@ -20,6 +22,10 @@ Global
 		{893FA293-7D48-46A7-B186-06E44541FC0B}.Debug|x64.Build.0 = Debug|x64
 		{893FA293-7D48-46A7-B186-06E44541FC0B}.Release|x64.ActiveCfg = Release|x64
 		{893FA293-7D48-46A7-B186-06E44541FC0B}.Release|x64.Build.0 = Release|x64
+		{52D7B61D-CC0F-4B13-AF7A-778561C054AC}.Debug|x64.ActiveCfg = Debug|x64
+		{52D7B61D-CC0F-4B13-AF7A-778561C054AC}.Debug|x64.Build.0 = Debug|x64
+		{52D7B61D-CC0F-4B13-AF7A-778561C054AC}.Release|x64.ActiveCfg = Release|x64
+		{52D7B61D-CC0F-4B13-AF7A-778561C054AC}.Release|x64.Build.0 = Release|x64
 		{8A0D1EEC-D3F2-418A-9B42-5B9B7D77C71F}.Debug|x64.ActiveCfg = Debug|x64
 		{8A0D1EEC-D3F2-418A-9B42-5B9B7D77C71F}.Debug|x64.Build.0 = Debug|x64
 		{8A0D1EEC-D3F2-418A-9B42-5B9B7D77C71F}.Release|x64.ActiveCfg = Release|x64

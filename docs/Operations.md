@@ -11,6 +11,10 @@ Build `DowePinless.sln` in `Release|x64`. Run `Install-DowePinless.ps1` elevated
 `-BuildDirectory` at the folder containing the three binaries. The script installs the local
 service and registers only the Dowe Pinless provider CLSID. It does not filter other providers.
 
+Before installing in a VM, build and run the `DowePinlessCoreTests` project. It verifies public
+RFC 6238 SHA-1 compatibility vectors, strict six-digit parsing, and recovery-code normalization
+without contacting the service or changing Windows configuration.
+
 ## Enrollment and validation
 
 Run `DowePinlessEnroll.exe` from an elevated interactive console. Enrollment is intentionally

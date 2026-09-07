@@ -95,6 +95,19 @@ dependencies.
 The build emits `DowePinlessCredentialProvider.dll`, `DowePinlessService.exe`, and
 `DowePinlessEnroll.exe` under `x64\Release`.
 
+## Core security tests
+
+The `DowePinlessCoreTests` console project uses the public RFC 6238 Appendix B HMAC-SHA-1
+vectors (reduced to Dowe Pinless's six-digit output), plus malformed-input and recovery-code
+normalization checks. Build and run it before any VM installation:
+
+```text
+Visual Studio: select DowePinlessCoreTests, Release|x64, then Debug > Start Without Debugging.
+```
+
+The test executable exercises pure security primitives only. It does not enroll an account,
+write an enrollment record, start the service, register a DLL, or change Windows authentication.
+
 ## Usage
 
 The current POC flow is:
