@@ -1,11 +1,13 @@
 #include "Security.h"
 #include <bcrypt.h>
 #include <dpapi.h>
+#include <sddl.h>
 #include <stdexcept>
 #include <cwctype>
 
 #pragma comment(lib, "bcrypt.lib")
 #pragma comment(lib, "crypt32.lib")
+#pragma comment(lib, "advapi32.lib")
 
 namespace dowe::security {
 namespace {
@@ -105,5 +107,46 @@ std::wstring NormalizeRecoveryCode(std::wstring_view value) {
     std::wstring out; out.reserve(value.size());
     for (wchar_t c : value) if (iswalnum(c)) out.push_back(static_cast<wchar_t>(towupper(c)));
     return out;
+}
+
+std::wstring TokenSidString(HANDLE token) {
+    DWORD bytes = 0;
+    GetTokenInformation(token, TokenUser, nullptr, 0, &bytes);
+    if (!bytes) WinError("token SID lookup failed");
+    Bytes buffer(bytes);
+    if (!GetTokenInformation(token, TokenUser, buffer.data(), bytes, &bytes))
+        WinError("token SID lookup failed");
+    auto* user = reinterpret_cast<const TOKEN_USER*>(buffer.data());
+    LPWSTR sid = nullptr;
+    if (!ConvertSidToStringSidW(user->User.Sid, &sid)) WinError("SID conversion failed");
+    std::wstring result(sid);
+    LocalFree(sid);
+    return result;
+}
+
+std::wstring CurrentUserSidString() {
+    HANDLE token = nullptr;
+    if (!OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &token))
+        WinError("current token lookup failed");
+    try {
+        auto result = TokenSidString(token);
+        CloseHandle(token);
+        return result;
+    } catch (...) { CloseHandle(token); throw; }
+}
+
+std::wstring AccountSidString(std::wstring_view account) {
+    DWORD sidBytes = 0, domainChars = 0; SID_NAME_USE use{};
+    LookupAccountNameW(nullptr, std::wstring(account).c_str(), nullptr, &sidBytes,
+                       nullptr, &domainChars, &use);
+    if (!sidBytes) WinError("account SID lookup failed");
+    Bytes sid(sidBytes); std::wstring domain(domainChars, L'\0');
+    if (!LookupAccountNameW(nullptr, std::wstring(account).c_str(), sid.data(), &sidBytes,
+                            domain.data(), &domainChars, &use))
+        WinError("account SID lookup failed");
+    LPWSTR text = nullptr;
+    if (!ConvertSidToStringSidW(reinterpret_cast<PSID>(sid.data()), &text))
+        WinError("SID conversion failed");
+    std::wstring result(text); LocalFree(text); return result;
 }
 } // namespace dowe::security

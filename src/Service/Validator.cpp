@@ -12,13 +12,20 @@ void Failure(store::Record& r) {
     store::Save(r);
 }
 }
-ipc::Response Validator::Validate(const ipc::Request& q) noexcept {
+ipc::Response Validator::Validate(const ipc::Request& q, std::wstring_view callerSid) noexcept {
     ipc::Response out{};
     try {
         out.reserved=ipc::InspectRequest(q,ipc::RequestType::Validate);
         if (out.reserved != 0) { out.result=ipc::Result::BadRequest; return out; }
         std::scoped_lock lock(mutex_); store::Record r;
         const std::wstring account(q.account.data()), code(q.code.data());
+        const std::wstring targetSid(q.sid.data());
+        const bool isSystem = _wcsicmp(callerSid.data(), L"S-1-5-18") == 0;
+        if (!isSystem && (_wcsicmp(callerSid.data(), targetSid.c_str()) != 0 ||
+                          _wcsicmp(security::AccountSidString(account).c_str(), targetSid.c_str()) != 0)) {
+            out.result = ipc::Result::BadRequest;
+            return out;
+        }
         if (!store::Load(account, r)) { out.result=ipc::Result::NotEnrolled; return out; }
         auto now=UnixNow(); if (r.lockedUntilUnixSeconds > now) { out.result=ipc::Result::LockedOut; out.retryAfterSeconds=static_cast<std::uint32_t>(r.lockedUntilUnixSeconds-now); return out; }
         std::array<std::uint8_t,6> supplied{};

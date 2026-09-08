@@ -1,5 +1,6 @@
 #include "Validator.h"
 #include "../Common/Protocol.h"
+#include "../Common/Security.h"
 #include <Windows.h>
 #include <sddl.h>
 
@@ -17,7 +18,20 @@ void WINAPI Control(DWORD code) {
 }
 DWORD WINAPI ClientThread(void* parameter) {
     HANDLE pipe=static_cast<HANDLE>(parameter); dowe::ipc::Request q{}; DWORD read=0,written=0;
-    if(ReadFile(pipe,&q,sizeof(q),&read,nullptr)&&read==sizeof(q)){ auto r=validator.Validate(q); WriteFile(pipe,&r,sizeof(r),&written,nullptr); FlushFileBuffers(pipe); }
+    if(ReadFile(pipe,&q,sizeof(q),&read,nullptr)&&read==sizeof(q)){
+        std::wstring callerSid;
+        if (ImpersonateNamedPipeClient(pipe)) {
+            HANDLE token{};
+            if (OpenThreadToken(GetCurrentThread(), TOKEN_QUERY, TRUE, &token)) {
+                try { callerSid = dowe::security::TokenSidString(token); } catch (...) {}
+                CloseHandle(token);
+            }
+            RevertToSelf();
+        }
+        auto r=callerSid.empty() ? dowe::ipc::Response{} : validator.Validate(q, callerSid);
+        if (callerSid.empty()) r.result=dowe::ipc::Result::InternalError;
+        WriteFile(pipe,&r,sizeof(r),&written,nullptr); FlushFileBuffers(pipe);
+    }
     DisconnectNamedPipe(pipe); CloseHandle(pipe); return 0;
 }
 void RunPipeServer() {

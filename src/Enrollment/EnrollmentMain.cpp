@@ -128,6 +128,8 @@ int Verify(const std::wstring& account) {
     dowe::ipc::Request request{};
     dowe::ipc::InitializeRequest(request, dowe::ipc::RequestType::Validate);
     wcsncpy_s(request.account.data(), request.account.size(), account.c_str(), _TRUNCATE);
+    const auto sid = dowe::security::CurrentUserSidString();
+    wcsncpy_s(request.sid.data(), request.sid.size(), sid.c_str(), _TRUNCATE);
     wcsncpy_s(request.code.data(), request.code.size(), code.c_str(), _TRUNCATE);
     const auto localDetail = dowe::ipc::InspectRequest(request, dowe::ipc::RequestType::Validate);
     if (localDetail != 0) {

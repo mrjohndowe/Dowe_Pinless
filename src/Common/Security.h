@@ -4,6 +4,7 @@
 #include <array>
 #include <cstdint>
 #include <string>
+#include <string_view>
 #include <vector>
 
 namespace dowe::security {
@@ -35,5 +36,8 @@ void SecureClear(void* value, std::size_t bytes) noexcept;
 std::string Base32Encode(BytesView value);
 Bytes Base32Decode(std::string_view value);
 std::wstring NormalizeRecoveryCode(std::wstring_view value);
+std::wstring CurrentUserSidString();
+std::wstring TokenSidString(HANDLE token);
+std::wstring AccountSidString(std::wstring_view account);
 
 } // namespace dowe::security
