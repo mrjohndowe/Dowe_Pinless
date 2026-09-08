@@ -3,16 +3,19 @@
 ## Security boundary
 
 The V2 Credential Provider DLL runs in LogonUI and owns only presentation and short-lived
-user input. It sends a fixed-size versioned request to a local named pipe. The LocalSystem
-service loads the account record, asks DPAPI to decrypt the TOTP seed, validates the input,
-updates replay/recovery state atomically, and returns only a result enum. No component logs
-seeds, TOTP values, recovery codes, DPAPI blobs, or full IPC payloads.
+user input. It sends a fixed-size versioned request to the local
+`\\.\pipe\DowePinless.Validator.v2` named pipe. The LocalSystem service impersonates the
+pipe client, obtains its token SID, checks the target account/SID binding, loads the account
+record, asks DPAPI to decrypt the TOTP seed, validates the input, updates replay/recovery state
+atomically, and returns only a result enum. No component logs seeds, TOTP values, recovery
+codes, DPAPI blobs, or full IPC payloads.
 
 The pipe rejects remote clients and its ACL grants access only to SYSTEM, Administrators,
-and authenticated local users. This POC still needs client-token validation and per-account
-authorization before production use; otherwise a local authenticated user can submit bounded
-validation attempts for another enrolled account. Rate limiting is persisted per account:
-five failures cause a 30-second delay.
+and authenticated local users. Normal callers must present a SID matching both their pipe
+token and the requested account; the LocalSystem LogonUI path may validate the selected target
+user. Mismatched-SID requests are rejected before record lookup. Production still needs broader
+token/impersonation coverage across domain and managed-account scenarios. Rate limiting is
+persisted per account: five failures cause a 30-second delay.
 
 ## Cryptography and state
 

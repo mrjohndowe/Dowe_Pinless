@@ -12,6 +12,7 @@ The project is currently under development. It is not ready for production use o
 
 - Windows 10/11 V2 Credential Provider tile
 - LocalSystem validation service with a versioned local named-pipe protocol
+- Version-2 IPC with caller-token SID binding and account/SID consistency checks
 - RFC 6238 HMAC-SHA-1 TOTP with six digits, 30-second periods, and ±1-step tolerance
 - CNG-generated 160-bit seeds protected by machine-scope DPAPI
 - Persisted TOTP replay prevention
