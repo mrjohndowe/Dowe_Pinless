@@ -26,7 +26,7 @@ HBITMAP CreateTileBitmap() noexcept {
     }
 
     auto* pixels = static_cast<std::uint32_t*>(bits);
-    std::fill(pixels, pixels + 48 * 48, 0x00006AD0u); // Dowe Pinless blue, opaque in DIB order
+    std::fill(pixels, pixels + 48 * 48, 0xFF006AD0u); // Dowe Pinless blue, opaque BGRA
     // Draw a simple white "D" mark. It is deliberately generated locally so the
     // provider has no image-file dependency on the secure desktop.
     constexpr char mark[9][7] = {
@@ -38,7 +38,7 @@ HBITMAP CreateTileBitmap() noexcept {
             if (mark[y][x] != '1') continue;
             for (int dy = 0; dy < 4; ++dy)
                 for (int dx = 0; dx < 4; ++dx)
-                    pixels[(12 + y * 4 + dy) * 48 + 10 + x * 4 + dx] = 0x00FFFFFFu;
+                    pixels[(12 + y * 4 + dy) * 48 + 10 + x * 4 + dx] = 0xFFFFFFFFu;
         }
     }
     return bitmap;
