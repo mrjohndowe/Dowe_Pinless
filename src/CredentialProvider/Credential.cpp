@@ -29,7 +29,7 @@ HBITMAP CreateTileBitmap() noexcept {
     std::fill(pixels, pixels + 48 * 48, 0xFF006AD0u); // Dowe Pinless blue, opaque BGRA
     // Draw a simple white "D" mark. It is deliberately generated locally so the
     // provider has no image-file dependency on the secure desktop.
-    constexpr char mark[9][7] = {
+    constexpr char mark[9][8] = {
         "1111100", "1100110", "1100011", "1100011", "1100011",
         "1100011", "1100011", "1100110", "1111100"
     };
