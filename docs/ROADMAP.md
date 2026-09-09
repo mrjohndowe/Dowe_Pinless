@@ -336,6 +336,11 @@ Step 39 evidence: `docs/Observability.md` and the common observability
 serializer define and enforce the redaction boundary; the Release|x64 test
 target passed the automated sensitive-field rejection checks.
 
+Step 49 implementation in progress: `windows-release.yml` waits for a
+successful `Windows build and security tests` run on `main`, downloads that
+run's exact artifact, packages it, and creates a GitHub release. Hosted
+workflow verification remains pending.
+
 ## Status update rule
 
 When work is completed, update the relevant checkbox and add one short
