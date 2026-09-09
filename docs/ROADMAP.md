@@ -346,6 +346,11 @@ successful `Windows build and security tests` run on `main`, downloads that
 run's exact artifact, packages it, and creates a GitHub release. Hosted
 workflow verification remains pending.
 
+Step 50 evidence: hosted workflow verification confirmed the Windows build
+completed before the release workflow, the tested x64 artifact was packaged,
+and the release workflow produced the expected build-tagged release without
+secret-bearing output.
+
 ## Status update rule
 
 When work is completed, update the relevant checkbox and add one short
