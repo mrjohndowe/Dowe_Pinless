@@ -5,6 +5,14 @@ All notable changes to Dowe Pinless will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0](https://github.com/mrjohndowe/Dowe_Pinless/compare/v1.0.0...v1.1.0) (2026-09-09)
+
+
+### Features
+
+* add maintainer agent instructions and update VSCode extensions recommendations ([2e5f065](https://github.com/mrjohndowe/Dowe_Pinless/commit/2e5f0655db977ad12d987646eb86bab4867cff28))
+* update VSCode extensions recommendations for improved development experience ([a1c51d8](https://github.com/mrjohndowe/Dowe_Pinless/commit/a1c51d828dffbd9f119ca8d6484cf48bd6f73032))
+
 ## 1.0.0 (2026-08-24)
 
 
