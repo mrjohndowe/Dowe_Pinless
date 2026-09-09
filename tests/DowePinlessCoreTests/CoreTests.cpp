@@ -106,6 +106,24 @@ void TestParserHardening() {
     Check(validFields == 0, "terminated IPC fields are accepted by framing inspection");
 }
 
+void TestIdentityFormats() {
+    struct Identity { const wchar_t* account; const wchar_t* sid; };
+    constexpr Identity identities[] = {
+        {L"TESTMACHINE\\mrjohndowe", L"S-1-5-21-2707993183-3876861637-4217379716-1000"},
+        {L"CONTOSO\\alice", L"S-1-5-21-111111111-222222222-333333333-1104"},
+        {L"alice@contoso.example", L"S-1-12-1-123456789-234567890-345678901-456789012"}
+    };
+    for (const auto& identity : identities) {
+        dowe::ipc::Request request{};
+        dowe::ipc::InitializeRequest(request, dowe::ipc::RequestType::Validate);
+        wcsncpy_s(request.account.data(), request.account.size(), identity.account, _TRUNCATE);
+        wcsncpy_s(request.code.data(), request.code.size(), L"000000", _TRUNCATE);
+        wcsncpy_s(request.sid.data(), request.sid.size(), identity.sid, _TRUNCATE);
+        Check(dowe::ipc::InspectRequest(request, dowe::ipc::RequestType::Validate) == 0,
+              "local/domain/managed identity framing is accepted");
+    }
+}
+
 void TestDdp2RoundTripAndTamperRejection() {
     dowe::store::Record original;
     original.account = L"Dowe Pinless Core Test " + std::to_wstring(GetCurrentProcessId());
@@ -197,6 +215,7 @@ int wmain() {
     TestInputAndRecoveryComparison();
     TestObservabilityRedaction();
     TestParserHardening();
+    TestIdentityFormats();
     TestDdp2RoundTripAndTamperRejection();
     wchar_t integration[8]{};
     const auto length = GetEnvironmentVariableW(L"DOWE_PINLESS_RUN_IPC_TEST", integration, _countof(integration));

@@ -225,6 +225,15 @@ Step 42 evidence: Release|x64 `DowePinlessCoreTests` passed the deterministic
 IPC framing corpus and all existing TOTP, storage, observability, truncation,
 interrupted-write, replay, and SID-bound IPC checks. Randomized fuzzing and
 sanitizer corpus work remains open.
+
+Step 43 implementation in progress: identity-format regression coverage now
+includes local, domain-style, and managed-account SID shapes; the branch
+shapes.
+
+Step 43 evidence: Release|x64 `DowePinlessCoreTests` accepted local,
+domain-style, and managed-account identity framing while retaining mismatched
+caller-SID rejection and all prior storage, parser, TOTP, replay, and
+observability checks. Live domain enrollment remains environment-dependent.
 - [ ] **Fuzz untrusted parsers and IPC.** Target request decoding, record
   parsing, and enrollment input. Acceptance: corpus and sanitizer/crash results
   are retained without including credential material.
