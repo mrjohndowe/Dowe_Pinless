@@ -250,6 +250,10 @@ Step 46 implementation in progress: `docs/SignedArtifacts.md` defines signing
 identity custody, provenance, timestamping, protected CI boundaries, clean-VM
 verification, revocation, and release gates. The actual signing drill remains
 pending until signing infrastructure is approved.
+
+Step 47 implementation in progress: `docs/SecureUpgradeRollback.md` defines
+forward upgrade, enrollment preservation, rollback triggers, downgrade
+protection, and the disposable-VM acceptance drill.
 - [ ] **Fuzz untrusted parsers and IPC.** Target request decoding, record
   parsing, and enrollment input. Acceptance: corpus and sanitizer/crash results
   are retained without including credential material.
