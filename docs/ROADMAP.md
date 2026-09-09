@@ -49,6 +49,97 @@ acceptance. No secret values were recorded.
   local accounts, standard/admin users, clock drift, and upgrade/uninstall.
   Acceptance: a versioned matrix lists result, build, VM snapshot, and evidence
   location for every case.
+
+Step 37 matrix prepared; results remain pending disposable-VM execution:
+
+| Case | Result | Build/snapshot | Evidence |
+| --- | --- | --- | --- |
+| Windows 10 x64 | Pending | Pending | Pending |
+| Windows 11 x64 | Pass | Windows 11 Home 25H2, build 26200.9168 | Disposable VM baseline, provider, service, lifecycle, and recovery checks |
+| Local administrator | Pass | Win11 25H2 VM | `TESTMACHINE\mrjohndowe` confirmed in the local Administrators group |
+| Standard local user | Pass | Win11 25H2 VM | `DowePinlessStandard` signed in successfully and returned to the administrator account; built-in recovery path remained available |
+| TOTP clock drift within tolerance | Pass | Win11 25H2 clock-drift snapshot | Current TOTP accepted with the VM clock approximately 20 seconds ahead |
+| Replay rejection | Pass | Win11 25H2 VM baseline | Fresh TOTP accepted once; immediate reuse rejected with result 2 |
+| Enrollment replacement | Pass | Win11 25H2 pre-replacement snapshot | Explicit ENROLL consent, new authenticator confirmation, and recovery material generated; prior state remains rollback-capable |
+| Service stop/start | Pass | Win11 25H2 VM | Service transitioned Running → Stopped → Running and retained Automatic startup |
+| Install and uninstall | Pass | Win11 25H2 lifecycle snapshot | Uninstall preserved enrollment records; reinstall restored service/provider registration |
+| Reboot recovery | Pass | Win11 25H2 VM | Password sign-in remained available and service returned Running/Automatic after reboot |
+| Built-in PIN/password availability | Pass | Win11 25H2 VM baseline | Sign-in screen showed Password and built-in sign-in options; Dowe Pinless tile also visible |
+
+The matrix intentionally does not authorize disabling built-in Windows PIN or
+password providers.
+
+Step 37A evidence: disposable VM baseline confirmed from the VM About screen as
+Windows 11 Home Single Language, version 25H2, OS build 26200.9168, x64; the
+local account and SID were recorded without secrets, and the Dowe Pinless
+service was Running/Automatic. The earlier `Get-ComputerInfo` display was
+inconsistent with the About screen and is not used as the release evidence.
+
+Step 37B evidence: Windows sign-in screen showed the built-in Password provider,
+sign-in options, and the Dowe Pinless tile. Sign-in completed through the
+built-in recovery provider; no provider was disabled and no credentials were
+recorded.
+
+Step 37C evidence: the Dowe Pinless service transitioned from Running to
+Stopped and back to Running while retaining Automatic startup. No built-in
+Windows authentication provider was changed.
+
+Step 37D evidence: after the service restart, the installed enrollment utility
+accepted a current TOTP and reported successful validation. The code itself was
+not recorded.
+
+Step 37E evidence: a fresh TOTP was accepted once, then immediate reuse of the
+same code was rejected with validation result 2. The code itself was not
+recorded.
+
+Step 37F evidence: a pre-replacement VirtualBox snapshot and independent
+password/recovery paths were confirmed before changing enrollment state.
+
+Step 37G evidence: local enrollment source review confirmed that the utility
+uses `--verify` only for validation; any other invocation prompts for explicit
+`ENROLL` consent and preserves the previous record if authenticator confirmation
+fails.
+
+Step 37H evidence: enrollment replacement completed after the protected VM
+snapshot; the new authenticator was confirmed and replacement recovery
+material was saved locally without recording secrets.
+
+Step 37I evidence: the newly enrolled authenticator produced a TOTP accepted
+by the validator. The entered code was not recorded.
+
+Step 37J evidence: one newly generated recovery code was accepted once, then
+immediate reuse was rejected with validation result 2. The recovery code was
+not recorded.
+
+Step 37K evidence: after a VM reboot, the built-in Password provider remained
+available; the Dowe Pinless service returned as Running with Automatic startup.
+
+Step 37L evidence: a pre-lifecycle VM snapshot and independent password,
+administrator, authenticator, and recovery-code paths were confirmed before
+testing uninstall behavior.
+
+Step 37M attempt: the uninstall script completed and explicitly preserved
+enrollment records; a restart and post-uninstall built-in Password sign-in
+check passed, and the Dowe Pinless service was absent afterward.
+
+Step 37N attempt: the first reinstall copy encountered an expected executable
+file lock from the previous service instance; the immediate retry completed
+successfully. Final checks confirmed Running/Automatic service state, provider
+registration, InprocServer32 registration, and the expected installed DLL path.
+
+Step 37O evidence: temporary local account `DowePinlessStandard` was created
+and confirmed in the Users group, with no Administrators-group membership. The
+standard-user sign-in/provider check then passed, with return to the tested
+administrator account.
+
+Step 37Q evidence: `TESTMACHINE\mrjohndowe` was confirmed as a local member of
+the Administrators group; no provider settings were changed.
+
+Step 37R evidence: a pre-clock-drift VM snapshot was created before changing
+time-related state; the clock-drift test remains pending.
+
+Step 37S evidence: current TOTP validation succeeded with the VM clock
+approximately 20 seconds ahead, within the configured tolerance window.
 - [x] **Automate the core test target in CI.** Build `Release|x64` and run
   `DowePinlessCoreTests` on a supported Windows runner. Acceptance: a pull
   request shows a passing required workflow and uploads no secrets or binaries
