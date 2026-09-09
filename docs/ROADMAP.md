@@ -216,6 +216,15 @@ Step 41 evidence: Release|x64 `DowePinlessCoreTests` passed malformed IPC
 header inspection in addition to all existing TOTP, storage, observability,
 truncation, interrupted-write, replay, and SID-bound IPC checks. Full fuzzing
 and sanitizer corpus work remains open.
+
+Step 42 implementation in progress: deterministic malformed-input coverage now
+includes unterminated and correctly terminated IPC account, code, and SID
+fields.
+
+Step 42 evidence: Release|x64 `DowePinlessCoreTests` passed the deterministic
+IPC framing corpus and all existing TOTP, storage, observability, truncation,
+interrupted-write, replay, and SID-bound IPC checks. Randomized fuzzing and
+sanitizer corpus work remains open.
 - [ ] **Fuzz untrusted parsers and IPC.** Target request decoding, record
   parsing, and enrollment input. Acceptance: corpus and sanitizer/crash results
   are retained without including credential material.
