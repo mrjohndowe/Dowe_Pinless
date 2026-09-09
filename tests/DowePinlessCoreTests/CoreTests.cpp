@@ -12,6 +12,8 @@
 #include <iterator>
 #include <Windows.h>
 #include <Lmcons.h>
+#include <random>
+#include <cstring>
 
 namespace {
 
@@ -124,6 +126,19 @@ void TestIdentityFormats() {
     }
 }
 
+void TestDeterministicParserStress() {
+    std::mt19937 generator(0xD0AE2026u);
+    std::uniform_int_distribution<unsigned int> byte(0, 255);
+    for (int iteration = 0; iteration < 2048; ++iteration) {
+        std::array<std::uint8_t, sizeof(dowe::ipc::Request)> bytes{};
+        for (auto& value : bytes) value = static_cast<std::uint8_t>(byte(generator));
+        dowe::ipc::Request request{};
+        std::memcpy(&request, bytes.data(), bytes.size());
+        (void)dowe::ipc::InspectRequest(request, dowe::ipc::RequestType::Validate);
+    }
+    Check(true, "deterministic malformed IPC corpus completed");
+}
+
 void TestDdp2RoundTripAndTamperRejection() {
     dowe::store::Record original;
     original.account = L"Dowe Pinless Core Test " + std::to_wstring(GetCurrentProcessId());
@@ -216,6 +231,7 @@ int wmain() {
     TestObservabilityRedaction();
     TestParserHardening();
     TestIdentityFormats();
+    TestDeterministicParserStress();
     TestDdp2RoundTripAndTamperRejection();
     wchar_t integration[8]{};
     const auto length = GetEnvironmentVariableW(L"DOWE_PINLESS_RUN_IPC_TEST", integration, _countof(integration));

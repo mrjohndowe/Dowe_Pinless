@@ -351,6 +351,15 @@ completed before the release workflow, the tested x64 artifact was packaged,
 and the release workflow produced the expected build-tagged release without
 secret-bearing output.
 
+Step 51 implementation in progress: deterministic parser stress coverage now
+feeds 2,048 reproducible malformed IPC request shapes through framing
+inspection without logging payloads.
+
+Step 51 evidence: Release|x64 `DowePinlessCoreTests` completed the 2,048-case
+deterministic malformed IPC corpus and all existing TOTP, storage,
+observability, parser, replay, identity, and SID-bound IPC checks with exit
+code 0. Randomized external fuzzing and sanitizer runs remain open.
+
 ## Status update rule
 
 When work is completed, update the relevant checkbox and add one short
