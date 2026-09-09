@@ -1,3 +1,7 @@
 [submodule "Dowe_Pinless.wiki"]
 	path = Dowe_Pinless.wiki
 	url = https://github.com/mrjohndowe/Dowe_Pinless.wiki.git
+
+[submodule "Dowe_Pinless.wiki"]
+	path = Dowe_Pinless.wiki
+	url = https://scm.mrjohndowe.com/mrjohndowe/Dowe_Pinless.wiki.git

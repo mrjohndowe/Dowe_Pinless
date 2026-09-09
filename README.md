@@ -66,6 +66,13 @@ The exact supported environment will be documented as implementation and testing
 
 The public interfaces, storage format, enrollment process, supported Windows versions, build steps, and deployment procedure may change. No production-readiness, security, compatibility, or availability guarantees are currently made.
 
+## Implementation Roadmap
+
+The interactive, check-off implementation plan is in
+[`docs/ROADMAP.md`](docs/ROADMAP.md). It separates the validation proof of
+concept from the separate architecture and security work required for any true
+TOTP-only Windows sign-in design.
+
 ## Installation
 
 Use a disposable x64 Windows VM with a snapshot, a separate recovery administrator, and a
