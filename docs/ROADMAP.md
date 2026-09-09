@@ -194,10 +194,15 @@ failed before compilation because `msbuild` was not initialized in the
 PowerShell environment. The workflow now initializes the x64 Visual Studio
 build environment before invoking MSBuild; hosted CI remains unchecked until
 the corrected run completes.
-- [ ] **Define safe observability.** Add only redacted event categories, a
+- [x] **Define safe observability.** Add only redacted event categories, a
   retention policy, and tests that assert sensitive values never reach logs.
   Acceptance: automated redaction tests pass and documentation describes how to
   collect diagnostics safely.
+
+Evidence: `docs/Observability.md` documents the allowlist, prohibited fields,
+retention, and collection rules; `DowePinlessCoreTests` passed safe-event
+serialization and rejection of representative secret-bearing events. No
+operational event writer is enabled by default.
 - [ ] **Threat-model the POC.** Document assets, attackers, trust boundaries,
   abuse cases, mitigations, and accepted risks. Acceptance: security review
   records owners and dispositions for all high-risk findings.
@@ -278,6 +283,10 @@ feature set:
 
 Step 38 evidence: storage regression coverage for truncated records and
 interrupted temporary writes passed in the rebuilt Release|x64 test target.
+
+Step 39 evidence: `docs/Observability.md` and the common observability
+serializer define and enforce the redaction boundary; the Release|x64 test
+target passed the automated sensitive-field rejection checks.
 
 ## Status update rule
 

@@ -2,6 +2,7 @@
 #include "../../src/Common/Store.h"
 #include "../../src/Common/Totp.h"
 #include "../../src/Common/Protocol.h"
+#include "../../src/Common/Observability.h"
 
 #include <array>
 #include <iostream>
@@ -59,6 +60,20 @@ void TestInputAndRecoveryComparison() {
     const auto different = dowe::security::HashRecoveryCode(L"ABCDE-FGHJL", salt);
     Check(dowe::security::ConstantTimeEqual(stored, normalized), "normalized recovery code matches");
     Check(!dowe::security::ConstantTimeEqual(stored, different), "different recovery code is rejected");
+}
+
+void TestObservabilityRedaction() {
+    dowe::observability::Event safe{"validation-result", "rejected", "0.1", "corr-1", 2};
+    const auto serialized = dowe::observability::Serialize(safe);
+    Check(!serialized.empty(), "safe observability event serializes");
+    Check(serialized.find("corr-1") != std::string::npos, "safe event keeps correlation ID");
+
+    const std::array<std::string, 5> forbidden{{"seed", "123456", "RECOVERY", "dpapi", "pipe"}};
+    for (const auto& value : forbidden) {
+        auto sensitive = safe;
+        sensitive.secret = value;
+        Check(dowe::observability::Serialize(sensitive).empty(), "secret-bearing event is rejected");
+    }
 }
 
 void TestDdp2RoundTripAndTamperRejection() {
@@ -150,6 +165,7 @@ void TestIpcRejectsMismatchedSid() {
 int wmain() {
     TestRfc6238Sha1Vectors();
     TestInputAndRecoveryComparison();
+    TestObservabilityRedaction();
     TestDdp2RoundTripAndTamperRejection();
     wchar_t integration[8]{};
     const auto length = GetEnvironmentVariableW(L"DOWE_PINLESS_RUN_IPC_TEST", integration, _countof(integration));
