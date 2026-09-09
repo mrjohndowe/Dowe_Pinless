@@ -87,6 +87,12 @@ Step 36B evidence: elevated `DowePinlessCoreTests` completed with
 `DOWE_PINLESS_RUN_IPC_TEST=1`; core, DDP2 storage/tamper, and mismatched-SID
 IPC regression checks passed locally with exit code 0. No secret values were
 recorded.
+
+Step 36D attempt: the first hosted workflow reached the Windows runner but
+failed before compilation because `msbuild` was not initialized in the
+PowerShell environment. The workflow now initializes the x64 Visual Studio
+build environment before invoking MSBuild; hosted CI remains unchecked until
+the corrected run completes.
 - [ ] **Define safe observability.** Add only redacted event categories, a
   retention policy, and tests that assert sensitive values never reach logs.
   Acceptance: automated redaction tests pass and documentation describes how to

@@ -24,6 +24,11 @@ jobs:
         with:
           submodules: false
 
+      - name: Initialize Visual Studio build environment
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
       - name: Build Release x64 solution
         shell: pwsh
         run: msbuild .\DowePinless.sln /m /p:Configuration=Release /p:Platform=x64 /v:minimal
