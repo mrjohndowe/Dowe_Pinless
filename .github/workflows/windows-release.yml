@@ -1,0 +1,46 @@
+name: Release successful Windows build
+
+on:
+  workflow_run:
+    workflows:
+      - Windows build and security tests
+    types:
+      - completed
+
+permissions:
+  actions: read
+  contents: write
+
+concurrency:
+  group: dowe-pinless-release-${{ github.event.workflow_run.id }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Package and release verified Windows artifact
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'main'
+    runs-on: windows-latest
+    steps:
+      - name: Download artifact from completed build
+        uses: actions/download-artifact@v4
+        with:
+          name: dowe-pinless-release-x64
+          path: release-input
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      - name: Package Release x64 artifact
+        shell: pwsh
+        run: |
+          Compress-Archive -Path .\release-input\* -DestinationPath .\DowePinless-Release-x64.zip
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.event.workflow_run.run_number }}
+          name: Dowe Pinless build ${{ github.event.workflow_run.run_number }}
+          target_commitish: ${{ github.event.workflow_run.head_sha }}
+          generate_release_notes: true
+          files: DowePinless-Release-x64.zip
