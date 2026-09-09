@@ -254,6 +254,11 @@ pending until signing infrastructure is approved.
 Step 47 implementation in progress: `docs/SecureUpgradeRollback.md` defines
 forward upgrade, enrollment preservation, rollback triggers, downgrade
 protection, and the disposable-VM acceptance drill.
+
+Step 48 implementation in progress: `docs/UsabilityCoverage.md` defines
+keyboard, screen-reader, high-contrast, localization, secure-desktop, and
+provider-recovery acceptance coverage. Targeted accessibility execution remains
+pending.
 - [ ] **Fuzz untrusted parsers and IPC.** Target request decoding, record
   parsing, and enrollment input. Acceptance: corpus and sanitizer/crash results
   are retained without including credential material.
@@ -340,6 +345,11 @@ Step 49 implementation in progress: `windows-release.yml` waits for a
 successful `Windows build and security tests` run on `main`, downloads that
 run's exact artifact, packages it, and creates a GitHub release. Hosted
 workflow verification remains pending.
+
+Step 50 evidence: hosted workflow verification confirmed the Windows build
+completed before the release workflow, the tested x64 artifact was packaged,
+and the release workflow produced the expected build-tagged release without
+secret-bearing output.
 
 ## Status update rule
 
