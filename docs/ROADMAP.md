@@ -254,6 +254,11 @@ pending until signing infrastructure is approved.
 Step 47 implementation in progress: `docs/SecureUpgradeRollback.md` defines
 forward upgrade, enrollment preservation, rollback triggers, downgrade
 protection, and the disposable-VM acceptance drill.
+
+Step 48 implementation in progress: `docs/UsabilityCoverage.md` defines
+keyboard, screen-reader, high-contrast, localization, secure-desktop, and
+provider-recovery acceptance coverage. Targeted accessibility execution remains
+pending.
 - [ ] **Fuzz untrusted parsers and IPC.** Target request decoding, record
   parsing, and enrollment input. Acceptance: corpus and sanitizer/crash results
   are retained without including credential material.
