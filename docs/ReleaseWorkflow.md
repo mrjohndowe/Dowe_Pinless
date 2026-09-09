@@ -11,7 +11,10 @@ commit. A failed or pull-request build cannot create a release.
 
 Before packaging, the job verifies that the service, enrollment utility, and
 Credential Provider DLL are present and rejects secret-like filenames. Missing
-or forbidden files fail the job before release creation.
+or forbidden files fail the job before release creation. The check deliberately
+does not reject the substring `pin`, because it is part of the product name
+`DowePinless`; PIN values are prohibited by content policy, not by a product
+filename substring.
 
 The release also includes `SHA256SUMS.txt`, containing the ZIP's SHA-256 hash,
 the originating workflow run number, and the tested commit SHA. The manifest
