@@ -234,6 +234,11 @@ Step 43 evidence: Release|x64 `DowePinlessCoreTests` accepted local,
 domain-style, and managed-account identity framing while retaining mismatched
 caller-SID rejection and all prior storage, parser, TOTP, replay, and
 observability checks. Live domain enrollment remains environment-dependent.
+
+Step 44 implementation in progress: `docs/BreakGlassRecovery.md` defines the
+separate administrator, password, Safe Mode/WinRE, snapshot, BitLocker, and
+rollback requirements. The operational VM drill and owner sign-off remain
+pending; the documentation review is complete.
 - [ ] **Fuzz untrusted parsers and IPC.** Target request decoding, record
   parsing, and enrollment input. Acceptance: corpus and sanitizer/crash results
   are retained without including credential material.
