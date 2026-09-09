@@ -360,6 +360,10 @@ deterministic malformed IPC corpus and all existing TOTP, storage,
 observability, parser, replay, identity, and SID-bound IPC checks with exit
 code 0. Randomized external fuzzing and sanitizer runs remain open.
 
+Step 54 implementation in progress: the release workflow now generates and
+publishes `SHA256SUMS.txt` alongside the ZIP, recording the artifact hash,
+workflow run number, and tested commit SHA.
+
 Step 52 implementation in progress: the release workflow now validates the
 expected service, enrollment, and provider artifacts and rejects secret-like
 filenames before packaging. Hosted failure-path verification remains pending.

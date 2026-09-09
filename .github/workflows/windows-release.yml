@@ -46,6 +46,12 @@ jobs:
             throw 'Release artifact contains a forbidden secret-like filename'
           }
           Compress-Archive -Path .\release-input\* -DestinationPath .\DowePinless-Release-x64.zip
+          $hash = (Get-FileHash '.\DowePinless-Release-x64.zip' -Algorithm SHA256).Hash
+          @(
+            "$hash  DowePinless-Release-x64.zip"
+            "build-run: ${{ github.event.workflow_run.run_number }}"
+            "commit: ${{ github.event.workflow_run.head_sha }}"
+          ) | Set-Content -LiteralPath '.\SHA256SUMS.txt' -Encoding ascii
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
@@ -54,4 +60,6 @@ jobs:
           name: Dowe Pinless build ${{ github.event.workflow_run.run_number }}
           target_commitish: ${{ github.event.workflow_run.head_sha }}
           generate_release_notes: true
-          files: DowePinless-Release-x64.zip
+          files: |
+            DowePinless-Release-x64.zip
+            SHA256SUMS.txt
