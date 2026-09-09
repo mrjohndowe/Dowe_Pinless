@@ -49,10 +49,15 @@ acceptance. No secret values were recorded.
   local accounts, standard/admin users, clock drift, and upgrade/uninstall.
   Acceptance: a versioned matrix lists result, build, VM snapshot, and evidence
   location for every case.
-- [ ] **Automate the core test target in CI.** Build `Release|x64` and run
+- [x] **Automate the core test target in CI.** Build `Release|x64` and run
   `DowePinlessCoreTests` on a supported Windows runner. Acceptance: a pull
   request shows a passing required workflow and uploads no secrets or binaries
   containing secrets.
+
+Evidence: hosted GitHub Actions workflow `Windows build and security tests`
+passed on `windows-latest` after initializing the Visual Studio x64 build
+environment; Release build, core tests, and artifact upload succeeded with no
+secret values in the logs.
 - [ ] **Document a reproducible developer build.** Pin the Visual Studio,
   MSVC, SDK, and build commands actually used. Acceptance: a clean Windows VM
   reproduces the build and core-test result.
