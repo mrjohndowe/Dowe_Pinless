@@ -34,6 +34,17 @@ jobs:
       - name: Package Release x64 artifact
         shell: pwsh
         run: |
+          $required = @('DowePinlessService.exe', 'DowePinlessEnroll.exe', 'DowePinlessCredentialProvider.dll')
+          foreach ($name in $required) {
+            if (-not (Test-Path -LiteralPath (Join-Path '.\release-input' $name))) {
+              throw "Release artifact is missing required file: $name"
+            }
+          }
+          $forbidden = Get-ChildItem -LiteralPath '.\release-input' -Recurse -File |
+            Where-Object { $_.Name -match '(?i)(secret|seed|recovery|token|password|pin|\.dpapi$)' }
+          if ($forbidden) {
+            throw 'Release artifact contains a forbidden secret-like filename'
+          }
           Compress-Archive -Path .\release-input\* -DestinationPath .\DowePinless-Release-x64.zip
 
       - name: Create GitHub release
