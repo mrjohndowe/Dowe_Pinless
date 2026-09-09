@@ -373,6 +373,10 @@ Step 56 implementation in progress: release validation is being tightened to
 an explicit allowlist of expected Release x64 outputs after a hosted run still
 reported an unexpected filename match.
 
+Step 57 implementation in progress: `Verify-DowePinlessRelease.ps1` provides a
+non-installing local verifier for release ZIP hashes, manifest metadata, and
+required binaries.
+
 Step 52 implementation in progress: the release workflow now validates the
 expected service, enrollment, and provider artifacts and rejects secret-like
 filenames before packaging. Hosted failure-path verification remains pending.

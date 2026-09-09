@@ -22,6 +22,11 @@ The release also includes `SHA256SUMS.txt`, containing the ZIP's SHA-256 hash,
 the originating workflow run number, and the tested commit SHA. The manifest
 is generated after packaging and contains no credentials or enrollment data.
 
+For local GitHub or Gitea verification, run
+`installer/Verify-DowePinlessRelease.ps1` with the downloaded ZIP and manifest.
+The script checks the hash and required service, enrollment, and provider files
+without installing or executing the package.
+
 The workflow uses the repository-provided GitHub token for artifact download
 and release creation. It does not sign binaries and does not contain private
 signing keys; signing remains governed by `docs/SignedArtifacts.md`.
