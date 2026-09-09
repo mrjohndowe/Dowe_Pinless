@@ -40,10 +40,18 @@ jobs:
               throw "Release artifact is missing required file: $name"
             }
           }
-          $forbidden = Get-ChildItem -LiteralPath '.\release-input' -Recurse -File |
-            Where-Object { $_.Name -match '(?i)(secret|seed|recovery|token|password|\.dpapi$)' }
-          if ($forbidden) {
-            throw 'Release artifact contains a forbidden secret-like filename'
+          $allowed = @(
+            'DowePinlessCommon.lib', 'DowePinlessCommon.pdb',
+            'DowePinlessCoreTests.exe', 'DowePinlessCoreTests.pdb',
+            'DowePinlessCredentialProvider.dll', 'DowePinlessCredentialProvider.exp',
+            'DowePinlessCredentialProvider.lib', 'DowePinlessCredentialProvider.pdb',
+            'DowePinlessEnroll.exe', 'DowePinlessEnroll.pdb',
+            'DowePinlessService.exe', 'DowePinlessService.pdb'
+          )
+          $unexpected = Get-ChildItem -LiteralPath '.\release-input' -Recurse -File |
+            Where-Object { $_.Name -notin $allowed }
+          if ($unexpected) {
+            throw "Release artifact contains unexpected file(s): $($unexpected.Name -join ', ')"
           }
           Compress-Archive -Path .\release-input\* -DestinationPath .\DowePinless-Release-x64.zip
           $hash = (Get-FileHash '.\DowePinless-Release-x64.zip' -Algorithm SHA256).Hash

@@ -369,6 +369,10 @@ positive because the filename check matched `pin` inside `DowePinless`. The
 workflow now rejects actual secret-like filename markers without treating the
 product name as a secret.
 
+Step 56 implementation in progress: release validation is being tightened to
+an explicit allowlist of expected Release x64 outputs after a hosted run still
+reported an unexpected filename match.
+
 Step 52 implementation in progress: the release workflow now validates the
 expected service, enrollment, and provider artifacts and rejects secret-like
 filenames before packaging. Hosted failure-path verification remains pending.
