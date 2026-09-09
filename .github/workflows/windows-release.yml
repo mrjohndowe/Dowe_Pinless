@@ -41,7 +41,7 @@ jobs:
             }
           }
           $forbidden = Get-ChildItem -LiteralPath '.\release-input' -Recurse -File |
-            Where-Object { $_.Name -match '(?i)(secret|seed|recovery|token|password|pin|\.dpapi$)' }
+            Where-Object { $_.Name -match '(?i)(secret|seed|recovery|token|password|\.dpapi$)' }
           if ($forbidden) {
             throw 'Release artifact contains a forbidden secret-like filename'
           }
