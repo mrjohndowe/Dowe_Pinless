@@ -1,0 +1,45 @@
+name: Windows build and security tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dowe-pinless-windows-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    name: Release x64 build and core tests
+    runs-on: windows-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+        with:
+          submodules: false
+
+      - name: Build Release x64 solution
+        shell: pwsh
+        run: msbuild .\DowePinless.sln /m /p:Configuration=Release /p:Platform=x64 /v:minimal
+
+      - name: Run core and storage tests
+        shell: pwsh
+        run: |
+          Get-Process -Name 'DowePinlessCoreTests' -ErrorAction SilentlyContinue |
+              Stop-Process -Force
+          $env:DOWE_PINLESS_RUN_IPC_TEST = '0'
+          & .\x64\Release\DowePinlessCoreTests.exe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Upload Release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dowe-pinless-release-x64
+          path: x64/Release/
+          if-no-files-found: error

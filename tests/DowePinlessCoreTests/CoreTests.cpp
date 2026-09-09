@@ -133,6 +133,12 @@ int wmain() {
     TestRfc6238Sha1Vectors();
     TestInputAndRecoveryComparison();
     TestDdp2RoundTripAndTamperRejection();
-    TestIpcRejectsMismatchedSid();
+    wchar_t integration[8]{};
+    const auto length = GetEnvironmentVariableW(L"DOWE_PINLESS_RUN_IPC_TEST", integration, _countof(integration));
+    if (length > 0 && _wcsicmp(integration, L"1") == 0) {
+        TestIpcRejectsMismatchedSid();
+    } else {
+        std::cout << "SKIP: service-dependent IPC SID test (set DOWE_PINLESS_RUN_IPC_TEST=1)\n";
+    }
     return failures == 0 ? 0 : 1;
 }

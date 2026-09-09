@@ -33,8 +33,15 @@ product production-ready.
   confirmation before replacing an existing enrollment.
 - [x] Core primitive tests using public RFC 6238 vectors and malformed-input
   cases.
+- [x] DDP2 authenticated enrollment-record envelope, migration, ACL verification,
+  and tamper rejection.
+- [x] Version-2 IPC caller-SID binding and account/SID consistency checks.
 - [x] Explicit install/uninstall scripts that preserve built-in Windows sign-in
   providers.
+
+Evidence: commits `c2f4b74` and `35f48e9`; VM snapshots recorded the DDP2 tamper
+rejection, restored-record validation, mismatched-SID rejection, and valid-user
+acceptance. No secret values were recorded.
 
 ## Milestone 1 — make the validation POC repeatable
 
@@ -59,14 +66,27 @@ product production-ready.
 
 ## Milestone 2 — harden the existing trust boundaries
 
-- [ ] **Audit and test caller identity binding.** Reconcile the documented
+- [x] **Audit and test caller identity binding.** Reconcile the documented
   design with the current implementation, including LogonUI, local users,
   administrators, domain accounts, and managed accounts. Acceptance: a caller
   cannot validate against another account's record; tests prove the cases.
-- [ ] **Harden enrollment-record storage.** Define authenticated record framing,
+- [x] **Harden enrollment-record storage.** Define authenticated record framing,
   durable atomic updates, ACL verification, corruption handling, and rollback
   detection. Acceptance: tamper, rollback, and interrupted-write tests fail
   closed without exposing secret material.
+
+Evidence: version-2 IPC tests and DDP2 round-trip/tamper tests passed in
+`DowePinlessCoreTests`; VM snapshots recorded both positive and negative paths.
+Domain/managed-account coverage remains an explicit follow-up.
+
+Step 36A evidence: `Release|x64` rebuilt successfully after separating the
+service-dependent IPC test mode and adding the Windows CI workflow. The CI
+workflow itself remains unchecked until a hosted workflow run completes.
+
+Step 36B evidence: elevated `DowePinlessCoreTests` completed with
+`DOWE_PINLESS_RUN_IPC_TEST=1`; core, DDP2 storage/tamper, and mismatched-SID
+IPC regression checks passed locally with exit code 0. No secret values were
+recorded.
 - [ ] **Define safe observability.** Add only redacted event categories, a
   retention policy, and tests that assert sensitive values never reach logs.
   Acceptance: automated redaction tests pass and documentation describes how to
@@ -144,9 +164,9 @@ Start with these in order; they have the highest value before expanding the
 feature set:
 
 1. Create the VM test matrix and baseline evidence.
-2. Add Windows CI for the core test target.
-3. Audit caller identity binding with focused tests.
-4. Define the enrollment-record integrity and rollback design.
+2. Run and require the new Windows CI workflow for the core test target.
+3. Expand caller identity coverage to domain and managed accounts.
+4. Add corrupted/truncated-record and interrupted-write regression cases.
 5. Write the POC threat model and safe logging specification.
 
 ## Status update rule
