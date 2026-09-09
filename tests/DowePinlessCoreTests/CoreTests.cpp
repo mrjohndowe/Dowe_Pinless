@@ -76,6 +76,17 @@ void TestObservabilityRedaction() {
     }
 }
 
+void TestParserHardening() {
+    dowe::ipc::Request request{};
+    dowe::ipc::InitializeRequest(request, dowe::ipc::RequestType::Validate);
+    request.magic = 0;
+    request.version = 99;
+    request.type = static_cast<dowe::ipc::RequestType>(99);
+    const auto detail = dowe::ipc::InspectRequest(request, dowe::ipc::RequestType::Validate);
+    Check((detail & dowe::ipc::BadMagic) != 0 && (detail & dowe::ipc::BadVersion) != 0 &&
+          (detail & dowe::ipc::BadType) != 0, "malformed IPC header is rejected");
+}
+
 void TestDdp2RoundTripAndTamperRejection() {
     dowe::store::Record original;
     original.account = L"Dowe Pinless Core Test " + std::to_wstring(GetCurrentProcessId());
@@ -166,6 +177,7 @@ int wmain() {
     TestRfc6238Sha1Vectors();
     TestInputAndRecoveryComparison();
     TestObservabilityRedaction();
+    TestParserHardening();
     TestDdp2RoundTripAndTamperRejection();
     wchar_t integration[8]{};
     const auto length = GetEnvironmentVariableW(L"DOWE_PINLESS_RUN_IPC_TEST", integration, _countof(integration));

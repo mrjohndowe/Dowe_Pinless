@@ -211,6 +211,11 @@ Step 40 evidence: `docs/ThreatModel.md` documents the POC assets, trust
 boundaries, threats, mitigations, accepted risks, production release blockers,
 and high-risk owner/disposition records. The threat-model checkbox remains open
 until the listed open findings receive security-review disposition.
+
+Step 41 evidence: Release|x64 `DowePinlessCoreTests` passed malformed IPC
+header inspection in addition to all existing TOTP, storage, observability,
+truncation, interrupted-write, replay, and SID-bound IPC checks. Full fuzzing
+and sanitizer corpus work remains open.
 - [ ] **Fuzz untrusted parsers and IPC.** Target request decoding, record
   parsing, and enrollment input. Acceptance: corpus and sanitizer/crash results
   are retained without including credential material.
