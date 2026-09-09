@@ -360,6 +360,10 @@ deterministic malformed IPC corpus and all existing TOTP, storage,
 observability, parser, replay, identity, and SID-bound IPC checks with exit
 code 0. Randomized external fuzzing and sanitizer runs remain open.
 
+Step 52 implementation in progress: the release workflow now validates the
+expected service, enrollment, and provider artifacts and rejects secret-like
+filenames before packaging. Hosted failure-path verification remains pending.
+
 ## Status update rule
 
 When work is completed, update the relevant checkbox and add one short

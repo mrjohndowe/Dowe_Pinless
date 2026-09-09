@@ -9,6 +9,10 @@ the completed build run, packages it as `DowePinless-Release-x64.zip`, and
 creates a GitHub release tagged `build-<workflow-run-number>` at the tested
 commit. A failed or pull-request build cannot create a release.
 
+Before packaging, the job verifies that the service, enrollment utility, and
+Credential Provider DLL are present and rejects secret-like filenames. Missing
+or forbidden files fail the job before release creation.
+
 The workflow uses the repository-provided GitHub token for artifact download
 and release creation. It does not sign binaries and does not contain private
 signing keys; signing remains governed by `docs/SignedArtifacts.md`.
