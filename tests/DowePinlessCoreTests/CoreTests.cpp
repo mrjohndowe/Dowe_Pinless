@@ -85,6 +85,25 @@ void TestParserHardening() {
     const auto detail = dowe::ipc::InspectRequest(request, dowe::ipc::RequestType::Validate);
     Check((detail & dowe::ipc::BadMagic) != 0 && (detail & dowe::ipc::BadVersion) != 0 &&
           (detail & dowe::ipc::BadType) != 0, "malformed IPC header is rejected");
+
+    dowe::ipc::Request fields{};
+    dowe::ipc::InitializeRequest(fields, dowe::ipc::RequestType::Validate);
+    fields.account.fill(L'A');
+    fields.code.fill(L'1');
+    fields.sid.fill(L'S');
+    const auto unterminated = dowe::ipc::InspectRequest(fields, dowe::ipc::RequestType::Validate);
+    Check((unterminated & dowe::ipc::UnterminatedAccount) != 0 &&
+          (unterminated & dowe::ipc::UnterminatedCode) != 0 &&
+          (unterminated & dowe::ipc::UnterminatedSid) != 0,
+          "unterminated IPC fields are rejected");
+
+    fields = {};
+    dowe::ipc::InitializeRequest(fields, dowe::ipc::RequestType::Validate);
+    fields.account[0] = L'A';
+    fields.code[0] = L'1';
+    fields.sid[0] = L'S';
+    const auto validFields = dowe::ipc::InspectRequest(fields, dowe::ipc::RequestType::Validate);
+    Check(validFields == 0, "terminated IPC fields are accepted by framing inspection");
 }
 
 void TestDdp2RoundTripAndTamperRejection() {
