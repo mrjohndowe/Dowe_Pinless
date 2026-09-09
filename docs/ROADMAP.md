@@ -206,6 +206,11 @@ operational event writer is enabled by default.
 - [ ] **Threat-model the POC.** Document assets, attackers, trust boundaries,
   abuse cases, mitigations, and accepted risks. Acceptance: security review
   records owners and dispositions for all high-risk findings.
+
+Step 40 evidence: `docs/ThreatModel.md` documents the POC assets, trust
+boundaries, threats, mitigations, accepted risks, production release blockers,
+and high-risk owner/disposition records. The threat-model checkbox remains open
+until the listed open findings receive security-review disposition.
 - [ ] **Fuzz untrusted parsers and IPC.** Target request decoding, record
   parsing, and enrollment input. Acceptance: corpus and sanitizer/crash results
   are retained without including credential material.
