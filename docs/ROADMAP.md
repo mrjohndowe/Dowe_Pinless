@@ -239,6 +239,12 @@ Step 44 implementation in progress: `docs/BreakGlassRecovery.md` defines the
 separate administrator, password, Safe Mode/WinRE, snapshot, BitLocker, and
 rollback requirements. The operational VM drill and owner sign-off remain
 pending; the documentation review is complete.
+
+Step 45 evidence: disposable-VM break-glass drill stopped the service,
+uninstalled while preserving enrollment records, confirmed built-in Password
+recovery, reinstalled the POC, restored service/provider registration, and
+accepted a current TOTP after restoration. No PIN/password provider was
+disabled and no secret values were recorded.
 - [ ] **Fuzz untrusted parsers and IPC.** Target request decoding, record
   parsing, and enrollment input. Acceptance: corpus and sanitizer/crash results
   are retained without including credential material.
