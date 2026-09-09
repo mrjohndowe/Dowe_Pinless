@@ -245,6 +245,11 @@ uninstalled while preserving enrollment records, confirmed built-in Password
 recovery, reinstalled the POC, restored service/provider registration, and
 accepted a current TOTP after restoration. No PIN/password provider was
 disabled and no secret values were recorded.
+
+Step 46 implementation in progress: `docs/SignedArtifacts.md` defines signing
+identity custody, provenance, timestamping, protected CI boundaries, clean-VM
+verification, revocation, and release gates. The actual signing drill remains
+pending until signing infrastructure is approved.
 - [ ] **Fuzz untrusted parsers and IPC.** Target request decoding, record
   parsing, and enrollment input. Acceptance: corpus and sanitizer/crash results
   are retained without including credential material.
