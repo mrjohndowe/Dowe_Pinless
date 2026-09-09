@@ -14,7 +14,9 @@ Credential Provider DLL are present and rejects secret-like filenames. Missing
 or forbidden files fail the job before release creation. The check deliberately
 does not reject the substring `pin`, because it is part of the product name
 `DowePinless`; PIN values are prohibited by content policy, not by a product
-filename substring.
+filename substring. The final package is checked against an explicit allowlist
+of Release x64 outputs, so unexpected files fail closed without broad substring
+matching.
 
 The release also includes `SHA256SUMS.txt`, containing the ZIP's SHA-256 hash,
 the originating workflow run number, and the tested commit SHA. The manifest
