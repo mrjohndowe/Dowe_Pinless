@@ -98,6 +98,24 @@ void TestDdp2RoundTripAndTamperRejection() {
             Check(!dowe::store::Load(original.account, rejected), "tampered DDP2 record is rejected");
             dowe::store::Save(original);
             Check(dowe::store::Load(original.account, loaded), "record remains usable after restoration");
+
+            {
+                std::ofstream output(path, std::ios::binary | std::ios::trunc);
+                output.write(reinterpret_cast<const char*>(bytes.data()), 5);
+            }
+            dowe::store::Record truncated;
+            Check(!dowe::store::Load(original.account, truncated), "truncated DDP2 record is rejected");
+            dowe::store::Save(original);
+            Check(dowe::store::Load(original.account, loaded), "known-good record survives truncated replacement");
+
+            const auto temporaryPath = path + L".tmp";
+            {
+                std::ofstream output(temporaryPath, std::ios::binary | std::ios::trunc);
+                output.write(reinterpret_cast<const char*>(bytes.data()), static_cast<std::streamsize>(bytes.size() / 2));
+            }
+            Check(dowe::store::Load(original.account, loaded), "interrupted temp write does not replace known-good record");
+            std::error_code tempIgnored;
+            std::filesystem::remove(temporaryPath, tempIgnored);
         }
     } catch (const std::exception& error) {
         std::cerr << "Storage test error: " << error.what() << "\n";

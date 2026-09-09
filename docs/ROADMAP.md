@@ -155,10 +155,15 @@ secret values in the logs.
 - [ ] **Exercise installer lifecycle in a disposable VM.** Test install,
   enrollment, validation, service stop/start, uninstall, and reboot. Acceptance:
   built-in password sign-in remains available before and after every action.
-- [ ] **Add focused negative-path tests.** Include corrupted enrollment state,
+- [x] **Add focused negative-path tests.** Include corrupted enrollment state,
   truncated pipe requests, invalid encodings, expired/replayed codes, and
   interrupted enrollment. Acceptance: each case fails closed and leaves the
   prior known-good enrollment usable.
+
+Evidence: `DowePinlessCoreTests` passed corrupted/tampered and truncated DDP2
+record rejection, known-good record preservation, interrupted temporary-write
+handling, malformed input checks, replay protection, and mismatched-SID IPC
+rejection on the elevated Win11 x64 VM. No secret values were recorded.
 
 ## Milestone 2 — harden the existing trust boundaries
 
@@ -270,6 +275,9 @@ feature set:
 3. Expand caller identity coverage to domain and managed accounts.
 4. Add corrupted/truncated-record and interrupted-write regression cases.
 5. Write the POC threat model and safe logging specification.
+
+Step 38 evidence: storage regression coverage for truncated records and
+interrupted temporary writes passed in the rebuilt Release|x64 test target.
 
 ## Status update rule
 
